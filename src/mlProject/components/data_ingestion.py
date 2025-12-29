@@ -35,3 +35,7 @@ class DataIngestion:
         os.makedirs(unzip_path, exist_ok=True)
         with zipfile.ZipFile(self.config.local_data_file, 'r') as zip_ref:
             zip_ref.extractall(unzip_path)
+        nested_zip = os.path.join(unzip_path, "winequality-data.zip")
+        if os.path.exists(nested_zip):
+            with zipfile.ZipFile(nested_zip, 'r') as zip_ref:
+                zip_ref.extractall(unzip_path) 
