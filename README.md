@@ -64,19 +64,19 @@ open up you local host and port
 [dagshub](https://dagshub.com/)
 
 MLFLOW_TRACKING_URI=https://dagshub.com/ajaychaudhary8104/End_to_End_ML_project_for_Wine_Quality_classification.mlflow \
-MLFLOW_TRACKING_USERNAME=ajaychaudhary8104 \
-MLFLOW_TRACKING_PASSWORD=gangapur8955 \
+MLFLOW_TRACKING_USERNAME=your username \
+MLFLOW_TRACKING_PASSWORD=your password \
 python script.py
 
 Run this to export as env variables:
 
-```For Windows CMD
+```bash
 
 set MLFLOW_TRACKING_URI=https://dagshub.com/ajaychaudhary8104/End_to_End_ML_project_for_Wine_Quality_classification.mlflow
 
-set MLFLOW_TRACKING_USERNAME=ajaychaudhary8104
+set MLFLOW_TRACKING_USERNAME=your username
 
-set MLFLOW_TRACKING_PASSWORD=gangapur8955
+set MLFLOW_TRACKING_PASSWORD=your password
 
 ```
 
