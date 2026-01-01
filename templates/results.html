@@ -1,56 +1,527 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Wine Quality Prediction Result</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Wine Quality Prediction Result" />
+    <title>Wine Quality Prediction - Results</title>
+    <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        :root {
+            --primary-color: #8B4513;
+            --accent-color: #D4A574;
+            --dark-color: #2C1810;
+            --light-color: #F5E6D3;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
         }
-        .result-container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 500px;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #F5E6D3 0%, #E8D4B8 100%);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 100%) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent-color) !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Container */
+        .results-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
             width: 100%;
         }
-        h1 {
-            color: #333;
-            margin: 0 0 20px 0;
+
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 6px solid var(--primary-color);
+            width: 100%;
         }
-        .prediction {
-            font-size: 48px;
-            color: #667eea;
-            font-weight: bold;
-            margin: 20px 0;
+
+        .result-header {
+            margin-bottom: 40px;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #667eea;
+
+        .result-header h1 {
+            color: var(--dark-color);
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .result-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Quality Score Display */
+        .quality-score-wrapper {
+            margin: 50px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .quality-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quality-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideInScale 0.6s ease-out;
+        }
+
+        @keyframes slideInScale {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Quality Level Styling */
+        .quality-circle.excellent {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .quality-circle.good {
+            background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+        }
+
+        .quality-circle.average {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        }
+
+        .quality-circle.poor {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .quality-label {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Quality Description */
+        .quality-description {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .quality-description h3 {
+            color: var(--dark-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .quality-description p {
+            color: #555;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* Quality Scale */
+        .quality-scale {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin: 40px 0;
+            align-items: flex-end;
+        }
+
+        .scale-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .scale-bar {
+            height: 40px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            background: #e9ecef;
+            position: relative;
+        }
+
+        .scale-item.current .scale-bar {
+            box-shadow: 0 0 15px rgba(139, 69, 19, 0.4);
+            transform: scaleY(1.1);
+        }
+
+        .scale-label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
         }
-        .back-link:hover {
-            background: #764ba2;
+
+        .btn-primary-custom:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary-custom:hover {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        /* Info Box */
+        .info-box-result {
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0e6ff 100%);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .info-box-result i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .info-box-result p {
+            margin: 0;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .result-card {
+                padding: 40px 25px;
+            }
+
+            .result-header h1 {
+                font-size: 2rem;
+            }
+
+            .quality-circle {
+                width: 150px;
+                height: 150px;
+                font-size: 3.5rem;
+            }
+
+            .quality-label {
+                font-size: 1.3rem;
+            }
+
+            .quality-scale {
+                gap: 5px;
+            }
+
+            .scale-label {
+                font-size: 0.7rem;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+            }
+
+            .btn-primary-custom,
+            .btn-secondary-custom {
+                width: 100%;
+            }
+        }
+
+        /* Confetti Effect */
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotateZ(360deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            animation: confetti-fall 3s ease-in forwards;
         }
     </style>
 </head>
 <body>
-    <div class="result-container">
-        <h1>Prediction Result</h1>
-        <p>The predicted wine quality is:</p>
-        <div class="prediction">{{ prediction }}</div>
-        <a href="/" class="back-link">Make Another Prediction</a>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-wine-glass"></i> Wine Quality Predictor
+            </a>
+        </div>
+    </nav>
+
+    <!-- Results Container -->
+    <div class="results-container">
+        <div class="result-card">
+            <div class="result-header">
+                <h1><i class="fas fa-chart-line"></i> Prediction Result</h1>
+                <p>Your wine quality analysis is complete</p>
+            </div>
+
+            <!-- Quality Score Display -->
+            <div class="quality-score-wrapper">
+                <div class="quality-badge">
+                    <div id="qualityCircle" class="quality-circle excellent">
+                        {{ prediction }}
+                    </div>
+                    <div class="quality-label" id="qualityLabel">Excellent</div>
+                </div>
+            </div>
+
+            <!-- Quality Scale Visualization -->
+            <div class="quality-scale">
+                <div class="scale-item">
+                    <div class="scale-bar" style="height: 15px; background: linear-gradient(135deg, #dc3545, #c82333);"></div>
+                    <div class="scale-label">Poor (0-3)</div>
+                </div>
+                <div class="scale-item">
+                    <div class="scale-bar" style="height: 30px; background: linear-gradient(135deg, #fd7e14, #ffc107);"></div>
+                    <div class="scale-label">Average (4-6)</div>
+                </div>
+                <div class="scale-item">
+                    <div class="scale-bar" style="height: 45px; background: linear-gradient(135deg, #17a2b8, #20c997);"></div>
+                    <div class="scale-label">Good (7-8)</div>
+                </div>
+                <div class="scale-item">
+                    <div class="scale-bar" style="height: 60px; background: linear-gradient(135deg, #28a745, #20c997);"></div>
+                    <div class="scale-label">Excellent (9-10)</div>
+                </div>
+            </div>
+
+            <!-- Quality Description -->
+            <div class="quality-description" id="qualityDescription">
+                <h3>Quality Analysis</h3>
+                <p>This wine shows excellent characteristics and quality indicators based on the physicochemical properties analyzed.</p>
+            </div>
+
+            <div class="info-box-result">
+                <i class="fas fa-lightbulb"></i>
+                <p><strong>Note:</strong> This prediction is based on a machine learning model trained on comprehensive wine quality data. Actual quality may vary based on subjective taste preferences.</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="buttons-container">
+                <a href="/" class="btn-primary-custom">
+                    <i class="fas fa-redo"></i> Make Another Prediction
+                </a>
+                <a href="/#prediction-form" class="btn-secondary-custom">
+                    <i class="fas fa-arrow-up"></i> Back to Form
+                </a>
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Wine Quality Prediction System. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get prediction value and update UI
+        function initializeResults() {
+            const predictionValue = parseFloat(document.getElementById('qualityCircle').textContent.trim());
+            const qualityCircle = document.getElementById('qualityCircle');
+            const qualityLabel = document.getElementById('qualityLabel');
+            const qualityDescription = document.getElementById('qualityDescription');
+
+            let qualityLevel = '';
+            let qualityClass = '';
+            let description = '';
+
+            if (predictionValue >= 9) {
+                qualityLevel = 'Exceptional';
+                qualityClass = 'excellent';
+                description = 'Outstanding Quality - This wine demonstrates exceptional characteristics with superior physicochemical properties. It represents the highest tier of quality.';
+            } else if (predictionValue >= 7) {
+                qualityLevel = 'Excellent';
+                qualityClass = 'excellent';
+                description = 'Excellent Quality - This wine shows excellent properties with well-balanced characteristics, indicating high quality and premium potential.';
+            } else if (predictionValue >= 5) {
+                qualityLevel = 'Good';
+                qualityClass = 'good';
+                description = 'Good Quality - This wine displays good characteristics and is suitable for consumption with balanced attributes across physicochemical measures.';
+            } else if (predictionValue >= 3) {
+                qualityLevel = 'Average';
+                qualityClass = 'average';
+                description = 'Average Quality - This wine is acceptable with moderate quality indicators. There is room for improvement in several physicochemical properties.';
+            } else {
+                qualityLevel = 'Poor';
+                qualityClass = 'poor';
+                description = 'Poor Quality - This wine shows lower quality indicators across physicochemical properties. It may need significant improvement.';
+            }
+
+            // Update UI
+            qualityCircle.className = 'quality-circle ' + qualityClass;
+            qualityLabel.textContent = qualityLevel;
+            qualityDescription.innerHTML = `<h3>Quality Analysis</h3><p>${description}</p>`;
+
+            // Play confetti animation for excellent wines
+            if (predictionValue >= 7) {
+                createConfetti();
+            }
+
+            // Update scale highlight
+            const scaleItems = document.querySelectorAll('.scale-item');
+            scaleItems.forEach((item, index) => {
+                item.classList.remove('current');
+                if ((index === 0 && predictionValue < 3) ||
+                    (index === 1 && predictionValue >= 3 && predictionValue < 7) ||
+                    (index === 2 && predictionValue >= 7 && predictionValue < 9) ||
+                    (index === 3 && predictionValue >= 9)) {
+                    item.classList.add('current');
+                }
+            });
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#8B4513', '#D4A574', '#2C1810', '#F5E6D3', '#28a745'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3300);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeResults);
+    </script>
 </body>
 </html>
